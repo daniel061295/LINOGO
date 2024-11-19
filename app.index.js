@@ -1,6 +1,6 @@
 import express, { json } from 'express';
-import { corsMiddleware } from './middlewares/cors.js';
-import { createUserRouter, UserModel } from './api/users/user.index.js';
+import { corsMiddleware } from './src/middlewares/cors.js';
+import { createUserRouter, UserModel } from './src/api/users/user.index.js';
 
 const app = express();
 app.disable('x-powered-by');
