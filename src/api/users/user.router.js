@@ -13,7 +13,7 @@ export const createUserRouter = ({ userModel }) => {
 
   // userRouter.get('/:id', protectedEndPoint, userController.getById);
   // userRouter.delete('/:id', protectedEndPoint, userController.delete);
-  userRouter.post('/register', userController.create);
+  userRouter.post('/', userController.create);
   userRouter.get('/', userController.getAll);
   userRouter.get('/:id', userController.getById);
   userRouter.put('/:id', userController.update);
