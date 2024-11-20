@@ -3,6 +3,7 @@ export class Controller {
     this.Model = Model
     this.Schema = Schema
   }
+
   getAll = async (req, res) => {
     const { status, result } = await this.Model.getAll();
     if (status) return res.json(result);
@@ -52,6 +53,5 @@ export class Controller {
     if (status) return res.json(result);
     res.status(404).json({ result: `Object with id: ${id} not found` });
   };
-
 
 }
