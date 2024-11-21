@@ -46,6 +46,7 @@ export class UserController extends Controller {
       return res.status(422).json({
         error: JSON.parse(validationResult.error.message)
       });
+
     }
     const { username, password } = validationResult.data;
     const user = await this.Model.getByNameUser({ username });
@@ -53,6 +54,7 @@ export class UserController extends Controller {
 
     const isValid = await bcrypt.compare(password, user.result.password);
     if (!isValid) { return res.status(401).json({ result: 'Invalid password' }); }
+    console.log(SECRET_JWT_KEY)
     const token = jwt.sign(
       {
         _id: user.result._id,
