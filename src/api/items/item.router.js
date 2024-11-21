@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ItemController } from './item.controller.js';
 import { ItemSchema } from './item.schema.js';
+import { protectedEndPoint } from '../../middlewares/auth.js';
 
 export const createItemRouter = ({ itemModel }) => {
   const itemRouter = Router();
@@ -8,11 +9,11 @@ export const createItemRouter = ({ itemModel }) => {
   const itemSchema = new ItemSchema();
   const itemController = new ItemController({ Model: itemModel, Schema: itemSchema });
 
-  itemRouter.post('/', itemController.create);
-  itemRouter.get('/', itemController.getAll);
-  itemRouter.get('/:id', itemController.getById);
-  itemRouter.put('/:id', itemController.update);
-  itemRouter.delete('/:id', itemController.delete);
+  itemRouter.post('/', protectedEndPoint, itemController.create);
+  itemRouter.get('/', protectedEndPoint, itemController.getAll);
+  itemRouter.get('/:id', protectedEndPoint, itemController.getById);
+  itemRouter.put('/:id', protectedEndPoint, itemController.update);
+  itemRouter.delete('/:id', protectedEndPoint, itemController.delete);
 
   return itemRouter;
 };

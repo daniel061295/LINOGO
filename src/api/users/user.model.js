@@ -2,8 +2,9 @@ import { mongoose } from 'mongoose';
 import { connectDB } from '../../config/database.js';
 
 const userSchemaMongoose = new mongoose.Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  email: { type: String, required: true, unique: true }
 }
 );
 const User = mongoose.model('User', userSchemaMongoose);
@@ -13,10 +14,10 @@ connectDB();
 export class UserModel {
   constructor() { }
   static async createNew({ input }) {
-    const { username, password } = input;
+    const { username, password, email } = input;
     let status = false;
     let result = "";
-    const newUser = new User({ username, password })
+    const newUser = new User({ username, password, email })
     // await newUser.validate();
     await newUser.save()
       .then(() => {
@@ -51,7 +52,7 @@ export class UserModel {
     await User.find({ _id: id })
       .then(usuarios => {
         status = true;
-        result = usuarios
+        result = usuarios[0]
       })
       .catch(err => {
         status = false;
@@ -92,6 +93,49 @@ export class UserModel {
         // console.error(result);
       });
     return { status, result };
+  }
+
+  static async getByNameUser({ username }) {
+    let status = false;
+    let result = "";
+    await User.find({ username })
+      .then(usuarios => {
+        if (usuarios.length > 0) {
+          status = true;
+          result = usuarios[0]
+        } else {
+          status = false;
+          result = 'no users found!'
+        }
+      })
+      .catch(err => {
+        status = false;
+        result = err.message
+        // console.error('Error al buscar:', err)
+      });
+    return { status, result };
+  }
+
+  static async getByEmail({ email }) {
+    let status = false;
+    let result = "";
+    await User.find({ email })
+      .then(usuarios => {
+        if (usuarios.length > 0) {
+          status = true;
+          result = usuarios[0]
+        } else {
+          status = false;
+          result = 'no users found!'
+        }
+      })
+      .catch(err => {
+        status = false;
+        result = err.message
+        // console.error('Error al buscar:', err)
+      });
+    return { status, result };
+
   }
 
 }

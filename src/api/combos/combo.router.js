@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ComboController } from './combo.controller.js';
 import { ComboSchema } from './combo.schema.js';
+import { protectedEndPoint } from '../../middlewares/auth.js';
 
 export const createComboRouter = ({ comboModel }) => {
   const comboRouter = Router();
@@ -8,11 +9,11 @@ export const createComboRouter = ({ comboModel }) => {
   const comboSchema = new ComboSchema();
   const comboController = new ComboController({ Model: comboModel, Schema: comboSchema });
 
-  comboRouter.post('/', comboController.create);
-  comboRouter.get('/', comboController.getAll);
-  comboRouter.get('/:id', comboController.getById);
-  comboRouter.put('/:id', comboController.update);
-  comboRouter.delete('/:id', comboController.delete);
+  comboRouter.post('/', protectedEndPoint, comboController.create);
+  comboRouter.get('/', protectedEndPoint, comboController.getAll);
+  comboRouter.get('/:id', protectedEndPoint, comboController.getById);
+  comboRouter.put('/:id', protectedEndPoint, comboController.update);
+  comboRouter.delete('/:id', protectedEndPoint, comboController.delete);
 
   return comboRouter;
 };
