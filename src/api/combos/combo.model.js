@@ -17,7 +17,7 @@ export class ComboModel extends Model {
   static async getAll() {
     let status = false;
     let result = "";
-    await Instance.find({}).populate('combo_items').exec()
+    await this.Instance.find({}).populate('combo_items').exec()
       .then(combos => {
         status = true;
         result = combos
@@ -31,7 +31,7 @@ export class ComboModel extends Model {
   static async getById({ id }) {
     let status = false;
     let result = "";
-    await Instance.find({ _id: id }).populate('combo_items').exec()
+    await this.Instance.find({ _id: id }).populate('combo_items').exec()
       .then(combos => {
         status = true;
         result = combos
