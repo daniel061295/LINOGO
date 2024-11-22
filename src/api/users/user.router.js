@@ -9,7 +9,7 @@ export const createUserRouter = ({ userModel }) => {
   const userSchema = new UserSchema();
   const userController = new UserController({ Model: userModel, Schema: userSchema });
 
-  userRouter.post('/', protectedEndPoint, userController.create);
+  // userRouter.post('/', protectedEndPoint, userController.create);
   userRouter.get('/', protectedEndPoint, userController.getAll);
   userRouter.get('/:id', protectedEndPoint, userController.getById);
   userRouter.put('/:id', protectedEndPoint, userController.update);

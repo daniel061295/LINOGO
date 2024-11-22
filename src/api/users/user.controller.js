@@ -11,10 +11,21 @@ export class UserController extends Controller {
     if (!validationResult.success) {
       return res.status(422).json({ error: JSON.parse(validationResult.error.message) });
     }
+
     const userByName = await this.Model.getByNameUser({ username: validationResult.data.username });
-    if (userByName.status) { return res.status(404).json({ result: `Username ${validationResult.data.username} is already in use!` }); }
+    if (userByName.status) {
+      return res.status(404).json({
+        result: `Username ${validationResult.data.username} is already in use!`
+      });
+    }
+
     const userByEmail = await this.Model.getByEmail({ email: validationResult.data.email });
-    if (userByEmail.status) { return res.status(404).json({ result: `Email ${validationResult.data.email} is already registered!` }); }
+    if (userByEmail.status) {
+      return res.status(404).json({
+        result: `Email ${validationResult.data.email} is already registered!`
+      });
+    }
+
     const { status, result } = await this.Model.createNew({
       input: {
         ...validationResult.data,
