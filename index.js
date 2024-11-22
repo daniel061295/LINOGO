@@ -1,8 +1,7 @@
 import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
 
-import { corsMiddleware } from './src/middlewares/cors.js';
-import { verityToken } from './src/middlewares/auth.js';
+import { corsMiddleware, verityToken, jsonErrorHandler } from './src/middlewares/index.js';
 
 import { createUserRouter, UserModel } from './src/api/users/user.index.js';
 import { createItemRouter, ItemModel } from './src/api/items/item.index.js';
@@ -16,18 +15,13 @@ app.use(corsMiddleware());
 app.use(json());
 app.use(cookieParser());
 app.use(verityToken);
+app.use(jsonErrorHandler);
 
 app.use('/users', createUserRouter({ userModel: UserModel }));
 app.use('/items', createItemRouter({ itemModel: ItemModel }));
 app.use('/combos', createComboRouter({ comboModel: ComboModel }));
 app.use('/orders', createOrderRouter({ orderModel: OrderModel }));
 
-app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    return res.status(400).json({ error: 'Bad request' });
-  }
-  next();
-});
 
 const PORT = process.env.PORT ?? 5000;
 app.listen(PORT, () => {

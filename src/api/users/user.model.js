@@ -17,7 +17,7 @@ export class UserModel extends Model {
   static async getByNameUser({ username }) {
     let status = false;
     let result = "";
-    await User.find({ username })
+    await this.Instance.find({ username })
       .then(usuarios => {
         if (usuarios.length > 0) {
           status = true;
@@ -37,7 +37,7 @@ export class UserModel extends Model {
   static async getByEmail({ email }) {
     let status = false;
     let result = "";
-    await User.find({ email })
+    await this.Instance.find({ email })
       .then(usuarios => {
         if (usuarios.length > 0) {
           status = true;
