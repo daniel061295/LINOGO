@@ -13,4 +13,35 @@ connectDB();
 
 export class ComboModel extends Model {
   static Instance = mongoose.model('Combo', comboSchemaMongoose);
+
+  static async getAll() {
+    let status = false;
+    let result = "";
+    await Instance.find({}).populate('combo_items').exec()
+      .then(combos => {
+        status = true;
+        result = combos
+      })
+      .catch(err => {
+        status = false;
+        result = err.message
+      });
+    return { status, result };
+  }
+  static async getById({ id }) {
+    let status = false;
+    let result = "";
+    await Instance.find({ _id: id }).populate('combo_items').exec()
+      .then(combos => {
+        status = true;
+        result = combos
+      })
+      .catch(err => {
+        status = false;
+        result = err.message
+
+      });
+    return { status, result };
+  }
 }
+
