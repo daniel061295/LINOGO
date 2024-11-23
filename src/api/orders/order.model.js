@@ -20,6 +20,17 @@ const orderSchemaMongoose = new mongoose.Schema({
     reference: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: "order_products.type" }
   }],
   order_value: { type: Number, required: true },
+  order_estimate_delivery_date: { type: Date, required: true },
+  order_last_time_updated: { type: Date, default: Date.now },
+});
+orderSchemaMongoose.pre('save', function (next) {
+  this.order_last_time_updated = Date.now();
+  next();
+});
+orderSchemaMongoose.pre('updateOne', function (next) {
+  // Asegúrate de modificar el objeto `$set` para incluir la fecha actual
+  this._update.order_last_time_updated = Date.now();
+  next();
 });
 
 connectDB();

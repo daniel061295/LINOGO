@@ -39,7 +39,18 @@ export class OrderSchema {
       order_value: z.number({
         invalid_type_error: 'order_value must be a big integer',
         required_error: 'order_value is required'
-      }).int()
+      }).int(),
+      order_estimate_delivery_date: z.string({
+        invalid_type_error: 'order_estimate_delivery_date must be a string',
+        required_error: 'order_estimate_delivery_date is required'
+      }).datetime({
+        message: 'order_estimate_delivery_date must be a valid date time format: YYYY-MM-DDTHH:mm:ssZ'
+      }),
+      order_last_time_updated: z.string({
+        invalid_type_error: 'order_last_time_updated must be a string'
+      }).datetime({
+        message: 'order_last_time_updated must be a valid date time format: YYYY-MM-DDTHH:mm:ssZ'
+      }).optional(),
     });
   }
 
