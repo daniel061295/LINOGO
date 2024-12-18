@@ -24,12 +24,13 @@ const orderSchemaMongoose = new mongoose.Schema({
   order_last_time_updated: { type: Date, default: Date.now },
 });
 orderSchemaMongoose.pre('save', function (next) {
-  this.order_last_time_updated = Date.now();
+  const now = new Date();
+  this.order_last_time_updated = Date.now() - now.getTimezoneOffset() * 60000;
   next();
 });
 orderSchemaMongoose.pre('updateOne', function (next) {
-  // Asegúrate de modificar el objeto `$set` para incluir la fecha actual
-  this._update.order_last_time_updated = Date.now();
+  const now = new Date();
+  this._update.order_last_time_updated = Date.now() - now.getTimezoneOffset() * 60000;
   next();
 });
 
